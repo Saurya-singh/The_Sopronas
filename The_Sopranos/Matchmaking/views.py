@@ -12,3 +12,12 @@ def contact(request):
     return render(request, 'contact.html')
 def search(request):
     return render(request, 'search.html')
+
+def status_list(request):
+    return render(request, "./status_list.html")
+
+def status_form(request):
+    return render(request, "./home.html")
+
+def status_delete(request):
+    return 
