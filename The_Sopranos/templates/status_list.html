@@ -5,48 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 50%;
-            }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }   
-        </style>
 </head>
 <body>
-
-<table>
-        <tr>
-            <th>Full Name</th>
-            <th>Status</th>
-            <th> <button><a href="{% url 'status_insert' %}">Add New</a></button> </th>
-        </tr>
+    <h1>Status List</h1>   
+    <button><a href="{% url 'status_insert' %}">Add New</a></button>
     
-    
+    <div class="Statuses">
         {% for status in status_list %}
-            <tr>
-                <td>{{status.fullname}}</td>
-                <td>{{status.yourpost}}</td>
-                <td>
-                    <button><a href="{% url 'status_update' status.id %}">Edit</a></button>
+            <div class="status">
+            
+              <h2><a href="">{{status.yourpost}}</a></h2> 
+              <p> {{status.fullname}} </p>
+              <p>  {{status.posteddate}} </p>
+                <button><a href="{% url 'status_update' status.id %}">Edit</a></button>
                     <form action="{% url 'status_delete' status.id %}" method="post" >
                         {% csrf_token %}
                         <button type="submit">
                             Delete
                         </button>
                     </form>
-                </td>
-                    
-                
-            </tr>
-            {% endfor %}
+            </div>
+        {% endfor %}
+     </div>
 
-</table>
+                
+            
+         
+
+
 </body>
 </html>

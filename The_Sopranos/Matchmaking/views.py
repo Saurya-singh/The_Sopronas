@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
 from .forms import statusform
 from .models import Status
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 
-# Create your views here.
+
 
 def home(request):
     return render(request, 'home.html')
@@ -43,4 +45,40 @@ def status_delete(request,id):
     status = Status.objects.get(pk=id)
     status.delete()
     return redirect('/list')
+
+def get_login_page(req):
+    return render(req,"login.html")
+
+def get_sign_up_page(req):
+    return render(req,"sign_up.html")
+
+def post_create_user(req):
+    username=req.POST["username"]
+    password=req.POST["password"]
+    fname=req.POST["fname"]
+    lname=req.POST["lname"]
+    address=req.POST["address"]
+    phonenumber=req.POST["phonenumber"]
+    emailaddress=req.POST["emailaddress"]
+
+    print(username)
+
+    user=User.objects.create_user(username=username,email=emailaddress,password=password)
+
+    user.save()
+
+    return redirect("login")
+
+def post_login_user(req):
+    username=req.POST["username"]
+    password=req.POST["password"]
+
+    print(username,password)
+
+    user=authenticate(username=username,password=password)
+    print(user)
+    if user is not None:
+        return render(req,"home.html")
+    else:
+        return redirect("login")
     
