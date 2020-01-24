@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Status List</h1>   
+    <button><a href="{% url 'status_insert' %}">Add New</a></button>
+    
+    <div class="Statuses">
+        {% for status in status_list %}
+            <div class="status">
+            
+              <h2><a href="">{{status.yourpost}}</a></h2> 
+              <p> {{status.fullname}} </p>
+              <p>  {{status.posteddate}} </p>
+                <button><a href="{% url 'status_update' status.id %}">Edit</a></button>
+                    <form action="{% url 'status_delete' status.id %}" method="post" >
+                        {% csrf_token %}
+                        <button type="submit">
+                            Delete
+                        </button>
+                    </form>
+            </div>
+        {% endfor %}
+     </div>
+
+                
+            
+         
+
+
+</body>
+</html>
