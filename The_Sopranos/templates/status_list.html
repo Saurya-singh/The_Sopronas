@@ -15,7 +15,7 @@
             <div class="status">
             
               <h2><a href="">{{status.yourpost}}</a></h2> 
-              <p> {{status.fullname}} </p>
+              <p> {{user.fullname}} </p>
               <p>  {{status.posteddate}} </p>
                 <button><a href="{% url 'status_update' status.id %}">Edit</a></button>
                     <form action="{% url 'status_delete' status.id %}" method="post" >

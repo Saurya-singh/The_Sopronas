@@ -1,28 +1,40 @@
 from django.shortcuts import render,redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User,Permission
+from django.contrib.contenttypes.models import ContentType
+from django.contrib import messages
 from .forms import statusform
 from .models import Status
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 
-
-
+@login_required(login_url='login')
 def home(request):
     return render(request, 'home.html')
+
+@login_required(login_url='login')
 def notification(request):
     return render(request, 'notification.html')
+
+@login_required(login_url='login')
 def about(request):
     return render(request, 'about.html')
+
+@login_required(login_url='login')
 def contact(request):
     return render(request, 'contact.html')
+
+@login_required(login_url='login')
 def search(request):
     return render(request, 'search.html')
 
+
+@login_required(login_url='login')
 def status_list(request):
     context = {'status_list': Status.objects.all()}
     return render(request, "./status_list.html", context)
 
 
-             
+@login_required(login_url='login')            
 def status_form(request, id=0):
     if request.method == "GET":
         if id == 0:
@@ -67,7 +79,29 @@ def post_create_user(req):
 
     user.save()
 
-    return redirect("login")
+     #user permission 
+    content_type=ContentType.objects.get_for_model(Status)
+
+    #add permission
+    permission=Permission.objects.get(
+        codename='add_status',
+        content_type=content_type
+    )
+
+    user.user_permissions.add(permission)
+    
+    #view permission
+    permission=Permission.objects.get(
+        codename='view_status',
+        content_type=content_type
+    )
+
+    user.user_permissions.add(permission)    
+
+
+    login(req,user)
+
+    return redirect("home")
 
 def post_login_user(req):
     username=req.POST["username"]
@@ -78,7 +112,14 @@ def post_login_user(req):
     user=authenticate(username=username,password=password)
     print(user)
     if user is not None:
-        return render(req,"home.html")
+
+        login(req,user)
+        return redirect("home")
     else:
+        messages.error(req, 'Bad username or password')
         return redirect("login")
+
+def user_logout(req):
+    logout(req) 
+    return redirect('login')
     
