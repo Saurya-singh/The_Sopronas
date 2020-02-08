@@ -122,4 +122,3 @@ def post_login_user(req):
 def user_logout(req):
     logout(req) 
     return redirect('login')
-    
