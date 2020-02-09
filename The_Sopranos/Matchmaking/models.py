@@ -3,8 +3,6 @@ from django.utils import timezone as tz
 
 # Create your models here.
 
-
-
 class Status(models.Model):
     fullname = models.CharField(max_length=40)
     yourpost = models.TextField()
