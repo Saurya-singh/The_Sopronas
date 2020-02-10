@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User,Permission
+from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from django.contrib import messages
 from .forms import statusform
@@ -30,7 +31,17 @@ def search(request):
 
 @login_required(login_url='login')
 def status_list(request):
-    context = {'status_list': Status.objects.all()}
+
+
+    status_list=Status.objects.all()
+    search_term= ''
+
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+        status_list = status_list.filter(yourpost__icontains=search_term)
+
+    context = {'status_list': Status.objects.all(), 'search_term': search_term}
+
     return render(request, "./status_list.html", context)
 
 
@@ -58,6 +69,14 @@ def status_delete(request,id):
     status.delete()
     return redirect('/list')
 
+def searchresults(request):
+    query = request.POST['search']
+    result = Status.objects.filter(Q(yourpost__icontains=query))
+    Context = {'result': result}
+    return render(request, 'searchlist.html', Context)
+
+
+
 def get_login_page(req):
     return render(req,"login.html")
 
@@ -66,57 +85,63 @@ def get_sign_up_page(req):
 
 def post_create_user(req):
     username=req.POST["username"]
-    password=req.POST["password"]
+    password1=req.POST["password1"]
+    password2=req.POST["password2"]
     fname=req.POST["fname"]
     lname=req.POST["lname"]
-    address=req.POST["address"]
-    phonenumber=req.POST["phonenumber"]
     emailaddress=req.POST["emailaddress"]
 
-    print(username)
+    if password1==password2:
+        if User.objects.filter(username=username).exists():
+                messages.info(req,'Username exists, Try another one')
+                return render(req,'sign_up.html')
 
-    user=User.objects.create_user(username=username,email=emailaddress,password=password)
+        elif User.objects.filter(email=emailaddress).exists():
+                messages.info(req,'Email already in use')
+                return render(req,'sign_up.html')    
 
-    user.save()
+        else:    
+            user=User.objects.create_user(username=username,email=emailaddress,password=password1,)
+            user.save()
+            #user permission 
+            content_type=ContentType.objects.get_for_model(Status)
 
-     #user permission 
-    content_type=ContentType.objects.get_for_model(Status)
+            #add permission
+            permission=Permission.objects.get(
+                codename='add_status',
+                content_type=content_type
+            )
 
-    #add permission
-    permission=Permission.objects.get(
-        codename='add_status',
-        content_type=content_type
-    )
+            user.user_permissions.add(permission)
+            
+            #view permission
+            permission=Permission.objects.get(
+                codename='view_status',
+                content_type=content_type
+            )
 
-    user.user_permissions.add(permission)
-    
-    #view permission
-    permission=Permission.objects.get(
-        codename='view_status',
-        content_type=content_type
-    )
-
-    user.user_permissions.add(permission)    
+            user.user_permissions.add(permission)    
 
 
-    login(req,user)
+            login(req,user)
 
-    return redirect("home")
+            return redirect("home")
+
+    else:
+        messages.info(req,'Password do not match')
+        return render(req,'sign_up.html')
 
 def post_login_user(req):
     username=req.POST["username"]
     password=req.POST["password"]
-
-    print(username,password)
-
     user=authenticate(username=username,password=password)
-    print(user)
+    
     if user is not None:
 
         login(req,user)
         return redirect("home")
     else:
-        messages.error(req, 'Bad username or password')
+        messages.error(req, ' username or password error')
         return redirect("login")
 
 def user_logout(req):

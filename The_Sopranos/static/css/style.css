@@ -1,10 +1,10 @@
 #logo{
     float: left;
 }
-.nav-bar{
+.nav-bar {
     float: right;
     margin-right: 300px;
-    margin-top: 20px;
+    margin-top: 60px;
 }
 #search{
     float: left;
@@ -17,4 +17,136 @@
     float: left;
     margin-left: 4%;
     margin-top: 80px;
+}
+body {
+    font-family: "Lato", sans-serif;
+}
+
+
+
+.main-head{
+    height: 150px;
+    background: #FFF;
+   
+}
+
+.sidenav {
+    height: 100%;
+    background-color: #000;
+    overflow-x: hidden;
+    padding-top: 30px;
+}
+
+
+.main {
+    padding: 50px 200px;
+}
+
+.msg {
+    margin-top: 10%;
+    color: rgb(248, 21, 21);
+
+}
+a{
+    color:#FFF
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+}
+
+@media screen and (max-width: 450px) {
+    .login-form{
+        margin-top: 30%;
+    }
+    .signup-form{
+        margin-top: 40%;
+    }
+
+    .register-form{
+        margin-top: 10%;
+    }
+}
+
+@media screen and (min-width: 768px){
+    .main{
+        margin-left: 40%; 
+    }
+    .col-md-6 {
+        
+        max-width: 75%;
+
+    }
+    .sidenav{
+        width: 40%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+
+    .login-form{
+        margin-top: 50%;
+    }
+
+    .signup-form{
+        margin-top: 30%;
+    }
+
+    .register-form{
+        margin-top: 20%;
+    }
+}
+
+
+.login-main-text{
+    margin-top: 25%;
+    padding: 60px;
+    color: #fff;
+}
+
+.login-main-text h2{
+    font-weight: 300;
+}
+
+.btn-black{
+    background-color: #000 !important;
+    color: #fff;
+}    
+
+article{
+    background-color: #E0E0E0;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.article-2{
+    background-color: #E0E0E0;
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.row {
+    margin-right: 185px;
+    margin-left: -15px;
+}
+.for-space{
+    height: 250px;
+    width: 100%;
+}
+.for-space-2{
+    height: 160px;
+    width: 100%;
+}
+.for-space-3{
+    height: 160px;
+    width: 100%;
+}
+.search-list{
+    padding-left: 20px;
+}
+.for-form{
+    margin-top: 100px;  
+    padding: 100px;
 }

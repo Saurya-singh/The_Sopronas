@@ -12,6 +12,7 @@ urlpatterns = [
     path('poststatus',views.status_form, name='status_insert'),
     path('<int:id>/',views.status_form,name='status_update'),
     path('list',views.status_list, name="status_list"),
+    path('searchlist',views.searchresults),
     path('delete/<int:id>/',views.status_delete,name='status_delete'),
     path("login",get_login_page,name="login"),
     path("sign_up",get_sign_up_page,name="sign_up"),

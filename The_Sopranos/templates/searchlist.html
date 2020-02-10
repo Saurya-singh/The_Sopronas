@@ -25,19 +25,32 @@
     </div>
 </header>
 
-<div class= "for-space-2">
+<div class= "for-space">
 
 </div>
-    <form action=" " method="post" autocomplete="off">
-        {% csrf_token %}
+<div class="search-list">
 
-    
-    {{form}}
+<h1>Search List</h1>
 
-    <button type="submit" class="btn btn-success">
-        Submit</button>
-    <button><a href="{% url 'status_list' %}">Back to list</a> </button>
-        
-    </form> 
+{%csrf_token%}
+<article class = "article-2">
+    <br>
+    <div class="row">
+
+         <div class="col-sm-6 col-md-12">
+            <div class="Statuses">
+            {% for status in result %}
+            <div class="status">
+            <h3> {{status.fullname}} </h3>
+            <p> {{status.yourpost}}</p>
+            <p>  {{status.posteddate}} </p>
+            {% endfor %}
+            </div>
+            </div>
+        </div>
+    </div>
+</article>
+</div>
+
 </body>
 </html>
